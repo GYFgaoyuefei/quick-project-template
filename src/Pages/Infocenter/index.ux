@@ -1,0 +1,215 @@
+<import name="el-row" src="quist-element/components/el-row"></import>
+<import name="el-col" src="quist-element/components/el-col"></import>
+<import name="quist-loading" src="quist-ui/components/quist-loading/index"></import>
+<template>
+    <div class="infocenter-container">
+        <div class="infocenter-header"> 
+            <el-col span="{{20}}">
+                <div class="infocenter-left" style="margin-left: 15px;">
+                    <image src="{{logoIcon}}" style="width:60px;height:60px" ></image>
+                    <text class="infocenter-title">{{comName}}</text>
+                </div>
+            </el-col>
+        </div>
+        <div class="infocenter-body">
+            <div class="infocenter-content">
+            <block if="{{isLoading}}">
+                <quist-loading visible="{{isLoading}}" tip="加载中......" background="rgba(0, 0, 0, 0.6)"></quist-loading>
+            </block>
+            <block else>
+                <refresh class="refresh" onrefresh="onEventListener({ key: true, type: 'refresh'})" refreshing="{{isRefreshing}}" type="pulldown">
+                    <block if="{{isLoading}}">
+                        <quist-loading visible="{{isLoading}}" tip="加载中......" background="rgba(0, 0, 0, 0.6)"></quist-loading>
+                    </block>
+                    <block else>
+                        <!-- 列表实现，监听列表的scrollbottom事件，列表滚动到底部时加载更多数据 -->
+                        <div style="margin-top: 10px;height: auto;background-color: #ffffff;">
+                            <list id="list" onscrollbottom="onEventListener({key: true, type: 'renderMoreListItem'})">
+                            <block for="{{(index,value) in infoCenterLists}}">
+                                <!-- 有图 有字 左右 -->
+                                <list-item type="1" if="{{value.flag == '0' && value.backIcon != ''}}" class="infocenter-border" onclick="onEventListener({key: value, type: 'contentClick'})">
+                                    <div class="infocenter-border-one">
+                                        <el-row>
+                                            <el-col span="{{5}}" >
+                                                <div class="infocenter-one">
+                                                    <image src="{{value.backIcon}}" ></image>
+                                                </div>
+                                            </el-col>
+                                            <el-col span="{{19}}">
+                                                <div class="infocenter-right">
+                                                    <text class="infocenter-text">{{value.content}}</text>
+                                                </div>
+                                            </el-col>
+                                        </el-row> 
+                                    </div>
+                                </list-item>
+
+                                <!-- 有图 有字 上下 -->
+                                <list-item type="2" else if="{{value.flag == '1' && value.backIcon != ''}}" class="infocenter-border" onclick="onEventListener({key: value, type: 'contentClick'})">
+                                    <div class="infocenter-border-tow">
+                                        <el-row>
+                                            <el-col span="{{24}}" >
+                                                <div class="infocenter-tow" >
+                                                    <image src="{{value.backIcon}}" class="infocenter-image" ></image>
+                                                </div>
+                                                <div class="infocenter-two-title">
+                                                    <text class="image-text" >{{value.content}}</text>
+                                                </div>
+                                            </el-col>
+                                        </el-row> 
+                                    </div>
+                                </list-item>
+
+                                <!-- 有字 -->
+                                <list-item type="3" else if="{{value.backIcon == ''}}" class="infocenter-border" onclick="onEventListener({key: value, type: 'contentClick'})">
+                                    <div class="infocenter-third" >
+                                        <el-row>
+                                            <el-col span="{{24}}">
+                                                <div class="infocenter-third-text">
+                                                    <text>{{value.content}}</text>
+                                                </div> 
+                                            </el-col>
+                                        </el-row> 
+                                    </div>
+                                </list-item>
+                            </block>
+                            <list-item type="loadStatus" class="load-status">
+                                <progress type="circular" show="{{hasMoreData}}"></progress>
+                                <text show="{{hasMoreData}}">加载更多</text>
+                                <text show="{{!hasMoreData}}">没有啦~~</text>
+                            </list-item>
+                        </list>
+                        </div>                   
+                    </block> 
+                </refresh>
+            </block>
+                
+        </div>
+    </div>
+</template>
+<script>
+import {PageWrapper} from '../../Framework/Support/PageWrapper.js'
+import {getListInfo, saveAccess} from './Protocols/index.js'
+import { model } from './model.js'
+const pageWrapper = new PageWrapper(model, {getListInfo, saveAccess})
+export default pageWrapper.toPage({type: '内容列表页'})
+</script>
+<style lang="less">
+@percentheight:300px;
+@percentWidth:1.7;
+.refresh{
+    flex-direction: column;
+    flex: 1;
+    margin-top: 100px;
+}
+.infocenter-container{
+    flex: 1;
+    flex-direction: column;
+    .infocenter-header{
+        position: fixed;
+        top:0;
+        left: 0;
+        right: 0;
+        width: percentage(@percentWidth);
+        height: 100px;
+        background-color: #ffffff;
+        .infocenter-back{
+            width: percentage(1.0);
+            height: 100px;
+            align-items: center;
+            justify-content: center;
+        }
+        .infocenter-left{
+            width: percentage(1.0);
+            height: 100px;
+            align-items: center;
+            .infocenter-title{
+                margin-left: 10px;
+                font-weight: bold;
+                lines: 1;
+                font-size: 38px;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+    .infocenter-body{
+        flex: 1;
+        flex-direction: column;
+        background-color: #f0f8ff;
+         .infocenter-border{
+            border-bottom-width: 2px;
+            border-bottom-color: #ddd;
+            margin-left: 20px;
+            margin-right: 20px;
+            .infocenter-border-one{
+                width: percentage(1.0);
+                height: 160px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                .infocenter-one{
+                    height: 120px;
+                    width: 120px;
+                }
+                .infocenter-right{
+                    height: 120px;
+                    justify-content: center;
+                    .infocenter-right{
+                        font-size: 32px;
+                        align-items: center;
+                        lines: 1;
+                        text-overflow: ellipsis;
+                        flex-wrap: wrap;
+                        color: #000000;
+                        font-weight: 400;
+                    }
+                }
+            }
+            .infocenter-border-tow{
+                width: 100%;
+                height: 475px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                .infocenter-tow{
+                    height: 350px;
+                    width: 100%;
+                    .infocenter-image{
+                        height: 350px;
+                        width: 100%;
+                        background-size: 100% 100%;
+                        background-repeat: no-repeat;
+                    }
+                }
+                .infocenter-two-title{
+                    margin-top: 10px;
+                    width: percentage(1.0);
+                    height: 75px;
+                    align-items: center;
+                    lines: 1;
+                    text-overflow: ellipsis;
+                    font-size: 32px;
+                    color: #000000;
+                    font-weight: 600; 
+                }
+            }
+            .infocenter-third{
+                width: percentage(1.0);
+                height: 160px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                .infocenter-third-text{
+                    height: 120px;
+                    justify-content: center
+                }
+            }
+        }
+    }
+    .load-status{
+        justify-content: center;
+        align-items: center;
+        height: 100px;
+        width: 100%;
+        /* border-color: #bbbbbb;
+        border-bottom-width: 1px; */
+    }
+}
+</style>

@@ -1,0 +1,152 @@
+<import name="info-content" src="./test.ux"></import>
+ 
+<template>
+    <div class="doc-page">
+        <div class="page-head">
+            <div class="head-content-logo">
+                <image class="logo" src="../../Image/mnet.jpg"></image>
+            </div>
+            <div class="head-content">
+                <div class="content-title">
+                    <text>股票名称：梦网集团</text>
+                </div>
+                <div class="content-title">
+                    <text>股票代码：002123.sz</text>
+                </div>
+            </div>
+            <div class="head-content-language">
+                <text>语言</text>
+            </div>
+            <div class="head-content-menu">
+                <text>菜单</text>
+            </div>
+        </div>
+        <div class="menu-list">
+            <div class="menu-list-title" onclick="showOrdis">
+                <text>关于梦网</text>
+            </div>
+            <div class="menu-list-child" style="display: {{ visible }}">
+                <div class="menu-list-child-title">
+                    <text>集团简介</text>
+                </div>
+                <div class="menu-list-child-title">
+                    <text>发展历程</text>
+                </div>
+                <div class="menu-list-child-title">
+                    <text>荣誉资质</text>
+                </div>
+            </div>
+        </div>
+        <div class="menu-list">
+            <text>业务中心</text>
+        </div>
+        <div class="menu-list">
+            <text>梦网资讯</text>
+        </div>
+        <div class="menu-list">
+            <text>企业文化</text>
+        </div>
+        <div class="menu-list">
+            <text>投资者关系</text>
+        </div>
+        <div class="menu-list">
+            <text>加入梦网</text>
+        </div>
+        <div class="menu-list">
+            <text>荣信电力</text>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        visible: {
+            default: 'none'
+        }
+    },
+
+    onInit() {
+        console.log(this)
+    },
+
+    showOrdis() {
+        console.log(this.visible)
+        if (this.visible === 'none') {
+            this.visible = 'inline-block'
+        } else {
+            this.visible = 'none'
+        }
+    }
+}
+</script>
+
+
+<style lang="less">
+    .doc-page {
+        flex-direction: column;
+        .page-head {
+            padding: 0 10px;
+            flex-direction: row;
+            height: 150px;
+            align-items: center;
+            /* background-color: #7fffd4; */
+            border-bottom-width: 2px;
+            border-bottom-color: #ddd;
+            .head-content-logo {
+                flex-grow: 3;
+                width: 220px;
+                height: 100px;
+                .logo {
+                    width: percentage(1.0);
+                    flex-shrink: 0;
+                }
+            };
+            .head-content {
+                padding: 45px 0;
+                align-items: center;
+                flex-grow: 1;
+                flex-direction: column;
+                height: percentage(1.0);
+                .content-title {
+                    text {
+                        font-size: 20px;
+                        /* color: #ddd; */
+                    }
+                }
+            };
+            .head-content-language {
+                flex-grow: 0.5;
+                justify-content: flex-end;
+                align-items: center;
+                height: percentage(1.0);
+            };
+            .head-content-menu {
+                flex-grow: 0.5;
+                justify-content: flex-end;
+                align-items: center;
+                height: percentage(1.0);
+            }
+        }
+
+        .menu-list {
+            border-bottom-color: #dddddd;
+            border-bottom-width: 2px;
+            flex-direction: column;
+            .menu-list-title {
+                padding: 0 20px;
+                height: 80px;
+            }
+            .menu-list-child {
+                /* display: none; */
+                flex-direction: column;
+                background-color: #00ffff;
+                .menu-list-child-title {
+                    padding: 0 25px;
+                    height: 60px;
+                }
+            }
+        }
+    }
+</style>
+

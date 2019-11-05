@@ -1,0 +1,52 @@
+<template>
+    <div class="page-footer">
+        <div class="footer-content">
+            <text>电话： 4009-002123</text>
+        </div>
+        <div class="footer-content">
+            <text>传真： 07555-86017706</text>
+        </div>
+        <div class="footer-content">
+            <text>邮箱： marketing@montnets.com</text>
+        </div>
+        <div class="footer-content">
+            <text>官方微博： @梦网科技</text>
+        </div>
+        <div class="footer-content">
+            <text>地址： 深圳市南山区科技园高新中四道30号龙泰利大厦</text>
+        </div>
+        <div class="footer-copyright">
+            <text>© 2019 深圳市梦网科技发展有限公司版权所有   粤ICP备12012537号-1  隐私条款  网站地图       </text>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    
+}
+</script>
+
+
+<style lang="less">
+    .page-footer {
+        flex-direction: column;
+        margin-bottom: 100px;
+        .footer-content {
+            background-color: #2e8b57;
+            height: 100px;
+            justify-content: center;
+        }
+        .footer-copyright {
+            background-color: #000000;
+            width: percentage(1.0);
+            height: 150px;
+            align-items: center;
+            justify-content: center;
+            text {
+                color: #7fffd4;
+            }
+        }
+    }
+</style>
+
